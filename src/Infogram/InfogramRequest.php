@@ -16,7 +16,9 @@ class InfogramRequest extends SimpleRequest
 
     private $transport;
 
-    public function __construct(InfogramSession $session, $method, $path, $parameters = null, $baseUrl = null, $version = null, $transport = null)
+    private $options;
+
+    public function __construct(InfogramSession $session, $method, $path, $parameters = null, $baseUrl = null, $version = null, $transport = null, $options = array())
     {
         $base = isset($baseUrl) ? $baseUrl : self::DEFAULT_BASE_URL;
         $convertedParams = isset($parameters) ? self::convertCompoundParametersToStringIfNeeded($parameters) : array();
@@ -24,6 +26,7 @@ class InfogramRequest extends SimpleRequest
         $this->session = $session;
         $this->version = isset($version) ? $version : self::VERSION;
         $this->transport = isset($transport) ? $transport : new HttpTransport();
+        $this->options = $options;
     }
 
     public function execute()
@@ -39,6 +42,11 @@ class InfogramRequest extends SimpleRequest
     public function getVersion()
     {
         return $this->version;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     private static function convertCompoundParametersToStringIfNeeded($params)

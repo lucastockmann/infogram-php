@@ -11,9 +11,14 @@ class HttpTransport implements Transport
         $url = $request->getUrl();
         $params = $request->getParameters();
         $method = $request->getMethod();
+        $options = array();
 
-        $httpResponse = Requests::request($url, array(), $params, $method);
-        
+        if ($request instanceof InfogramRequest) {
+            $options = $request->getOptions();
+        }
+
+        $httpResponse = Requests::request($url, array(), $params, $method, $options);
+
         if (!$httpResponse) {
             return null;
         }
